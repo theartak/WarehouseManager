@@ -1,5 +1,8 @@
 package Warehouse;
 
+import Exceptions.InsufficientItemException;
+import Exceptions.InventoryFullException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,10 +17,10 @@ public class Warehouse {
     }
 
     // Add an item to the warehouse
-    public void addItem(Items item, int amount) {
+    public void addItem(Items item, int amount) throws InventoryFullException {
         int currentAmount = items.get(item.getType());
         if (amount > item.getType().getMaxCapacity() || currentAmount > item.getType().getMaxCapacity()) {
-            System.out.println("\nWarehouse for " + item.getType() + " is full.");
+            throw new InventoryFullException("\nInventory for " + item.getType() + " is full.");
         } else {
             items.put(item.getType(), currentAmount + amount);
             System.out.println("\nAdded " + item.getName() + " to warehouse.");
@@ -25,18 +28,18 @@ public class Warehouse {
     }
 
     // Remove an item from the inventory
-    public void removeItem(Items item) {
+    public void removeItem(Items item, int amount) throws InsufficientItemException {
         int currentAmount = items.get(item.getType());
-        if (currentAmount > 0) {
-            items.put(item.getType(), currentAmount - 1);
-            System.out.println("Removed " + item.getName() + " from inventory.");
+        if (currentAmount >= amount) {
+            items.put(item.getType(), currentAmount - amount);
+            System.out.println("\nRemoved " + item.getName() + " from inventory.");
         } else {
-            System.out.println("No " + item.getName() + " in inventory to remove.");
+            throw new InsufficientItemException("\nNo " + item.getName() + " in inventory to remove.");
         }
     }
 
     // Transfer items to another warehouse
-    public void transferItems(Warehouse otherWarehouse, Items item, int amount) {
+    public void transferItems(Warehouse otherWarehouse, Items item, int amount) throws InventoryFullException {
         int currentAmount = items.get(item.getType());
         if (currentAmount >= amount) {
             items.put(item.getType(), currentAmount - amount);
