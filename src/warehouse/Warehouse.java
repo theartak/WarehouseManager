@@ -1,13 +1,16 @@
-package Warehouse;
+package warehouse;
 
-import Exceptions.InsufficientItemException;
-import Exceptions.InventoryFullException;
+import exceptions.InsufficientItemException;
+import exceptions.InventoryFullException;
+import main.Main;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Warehouse {
-    private Map<ItemType, Integer> items;
+    private static final Logger logger = Logger.getLogger(Warehouse.class.getName());
+    private final Map<ItemType, Integer> items;
 
     public Warehouse() {
         items = new HashMap<>();
@@ -23,7 +26,7 @@ public class Warehouse {
             throw new InventoryFullException("\nInventory for " + item.getType() + " is full.");
         } else {
             items.put(item.getType(), currentAmount + amount);
-            System.out.println("\nAdded " + item.getName() + " to warehouse.");
+            logger.info("\nAdded " + item.getName() + " to warehouse.");
         }
     }
 
@@ -32,7 +35,7 @@ public class Warehouse {
         int currentAmount = items.get(item.getType());
         if (currentAmount >= amount) {
             items.put(item.getType(), currentAmount - amount);
-            System.out.println("\nRemoved " + item.getName() + " from inventory.");
+            logger.info("\nRemoved " + item.getName() + " from inventory.");
         } else {
             throw new InsufficientItemException("\nNo " + item.getName() + " in inventory to remove.");
         }
@@ -44,27 +47,27 @@ public class Warehouse {
         if (currentAmount >= amount) {
             items.put(item.getType(), currentAmount - amount);
             otherWarehouse.addItem(item, amount);
-            System.out.println("\nTransferred " + amount + " " + item.getName() + " to another warehouse.");
+            logger.info("\nTransferred " + amount + " " + item.getName() + " to another warehouse.");
         } else {
-            System.out.println("\nInsufficient " + item.getName() + " in warehouse.");
+            logger.info("\nInsufficient " + item.getName() + " in warehouse.");
         }
     }
 
     // Print the contents of the warehouse
     public void displayWarehouse() {
-        System.out.println("Warehouse:");
+        logger.info("Warehouse:");
         for (Map.Entry<ItemType, Integer> entry : items.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            logger.info(entry.getKey() + ": " + entry.getValue());
         }
     }
 
     // Display the current warehouse data
     public static void displayWarehouseData(Warehouse[] warehouses) {
-        System.out.println("\nWarehouse Data:");
+        logger.info("\nWarehouse Data:");
         for (int i = 0; i < warehouses.length; i++) {
-            System.out.println("\nWarehouse " + (i + 1) + ":");
+            logger.info("\nWarehouse " + (i + 1) + ":");
             warehouses[i].displayWarehouse();
-            System.out.println();
+            logger.info("");
         }
     }
 }

@@ -1,4 +1,4 @@
-package Warehouse;
+package warehouse;
 
 public class Items {
     private String name;

@@ -1,4 +1,4 @@
-package Warehouse;
+package warehouse;
 
 public enum ItemType {
     STEEL(50),

@@ -1,10 +1,15 @@
-import Exceptions.InsufficientItemException;
-import Exceptions.InventoryFullException;
-import Warehouse.Items;
-import Warehouse.Warehouse;
-import Warehouse.ItemType;
+package main;
+
+import exceptions.InsufficientItemException;
+import exceptions.InventoryFullException;
+import warehouse.Items;
+import warehouse.Warehouse;
+import warehouse.ItemType;
+import java.util.logging.Logger;
 
 public class Main {
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) throws InventoryFullException {
 
         final String ironDescription = "Used for crafting and upgrading weapons and buildings.";
@@ -34,14 +39,14 @@ public class Main {
             playerWarehouse.addItem(steel, 4);
             playerWarehouse.addItem(copper, 5);
         } catch (InventoryFullException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         // Remove an item from player's inventory
         try {
             playerWarehouse.removeItem(iron, 1);
         } catch (InsufficientItemException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         // Display player's warehouse
@@ -53,17 +58,17 @@ public class Main {
             playerWarehouse.transferItems(warehouse2, steel, 1);
             playerWarehouse.transferItems(warehouse3, copper, 1);
         } catch (InventoryFullException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         // Display player's and merchant's inventory after transfer
-        System.out.println("\nPlayer's Warehouse:");
+        logger.info("\nPlayer's Warehouse:");
         playerWarehouse.displayWarehouse();
-        System.out.println("\nNew Warehouse 1:");
+        logger.info("\nNew Warehouse 1:");
         warehouse1.displayWarehouse();
-        System.out.println("\nNew Warehouse 2:");
+        logger.info("\nNew Warehouse 2:");
         warehouse2.displayWarehouse();
-        System.out.println("\nNew Warehouse 3:");
+        logger.info("\nNew Warehouse 3:");
         warehouse3.displayWarehouse();
 
         // Populate warehouses
@@ -72,14 +77,14 @@ public class Main {
             warehouse2.addItem(new Items("Ore", oreDescription, oreIcon, ItemType.ORE), 3);
             warehouse3.addItem(new Items("Copper", copperDescription, copperIcon, ItemType.COPPER), 30);
         } catch (InventoryFullException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         try {
             warehouse2.removeItem(iron, 3);
             warehouse3.removeItem(copper, 11);
         } catch (InsufficientItemException e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
 
         // Display warehouse data

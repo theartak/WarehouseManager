@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 public class InventoryFullException extends Exception {
     public InventoryFullException(String message) {
